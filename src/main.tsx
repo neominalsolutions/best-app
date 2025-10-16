@@ -9,6 +9,7 @@ import {
 import ProjectListPage from './pages/projects/list/page';
 import ProjectFormPage from './pages/projects/[id]/page';
 import AboutPage from './pages/about/page';
+import LoginPage from './pages/login/login';
 
 const routes = [
 	{
@@ -30,6 +31,10 @@ const routes = [
 			{
 				path: '/projects/:id', // projects/1
 				Component: ProjectFormPage,
+			},
+			{
+				path: '/login',
+				Component: LoginPage,
 			},
 		],
 	},

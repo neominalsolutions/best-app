@@ -1,4 +1,4 @@
-import { Layout, Menu, theme } from 'antd';
+import { Layout, Menu, theme, Row, Col } from 'antd';
 import React from 'react';
 import { Outlet, Link } from 'react-router';
 
@@ -26,7 +26,18 @@ const MainLayout: React.FC = () => {
 
 	return (
 		<Layout>
-			<Header style={headerStyle}>Best Header</Header>
+			<Header style={headerStyle}>
+				<Row>
+					<Col span={12} style={{ textAlign: 'left' }}>
+						Best App
+					</Col>
+					<Col span={12} style={{ textAlign: 'right' }}>
+						<Link to="/login" style={{ color: '#fff' }}>
+							Login
+						</Link>
+					</Col>
+				</Row>
+			</Header>
 			<Header style={{ display: 'flex', alignItems: 'center' }}>
 				<div className="demo-logo" />
 				<div style={{ marginRight: 16 }}>Deneme</div>

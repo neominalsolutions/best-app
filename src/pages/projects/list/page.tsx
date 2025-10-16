@@ -2,6 +2,7 @@ import React from 'react';
 import { Input, Table } from 'antd';
 import { Link } from 'react-router';
 import type { TableColumnsType, TableProps } from 'antd';
+import { httpGet } from '../../../network/http.client';
 
 export interface DataType {
 	projectId: number;
@@ -66,9 +67,14 @@ function ProjectListPage() {
 	const [data, setData] = React.useState<DataType[]>([]);
 
 	React.useEffect(() => {
-		fetch('https://localhost:7109/api/projects')
-			.then((response) => response.json())
-			.then((json) => setData(json))
+
+		// fetch('https://localhost:7109/api/projects')
+		// 	.then((response) => response.json())
+		// 	.then((json) => setData(json))
+		// 	.catch((error) => console.error('Error fetching data:', error));
+
+		httpGet('/projects')
+			.then((data) => setData(data as DataType[]))
 			.catch((error) => console.error('Error fetching data:', error));
 	}, []);
 

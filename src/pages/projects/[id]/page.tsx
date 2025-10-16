@@ -3,6 +3,7 @@ import { Button, Card, Col, Form, Input, Row, type InputRef } from 'antd';
 import { useEffect, useRef, type KeyboardEvent } from 'react';
 import { useParams } from 'react-router';
 import type { DataType } from '../list/page';
+import { getProjectById } from '../../../services/projects/project.client';
 
 function ProjectFormPage() {
 	const params = useParams(); // {id: '1'} // dinamik değer yakalama functionı
@@ -11,13 +12,17 @@ function ProjectFormPage() {
 	const [form] = Form.useForm();
 
 	useEffect(() => {
-		fetch(`https://localhost:7109/api/projects/${params.id}`)
-			.then((response) => response.json())
-			.then((json) => {
-				// veri çekilince formu doldur.
-				form.setFieldsValue(json);
-			})
-			.catch((error) => console.error('Error fetching data:', error));
+		getProjectById(Number(params.id)).then((data) => {
+			form.setFieldsValue(data);
+		});
+
+		// fetch(`https://localhost:7109/api/projects/${params.id}`)
+		// 	.then((response) => response.json())
+		// 	.then((json) => {
+		// 		// veri çekilince formu doldur.
+		// 		form.setFieldsValue(json);
+		// 	})
+		// 	.catch((error) => console.error('Error fetching data:', error));
 	}, []);
 
 	/*  <Input value={data?.projectId} type="number" tabIndex={1} ref={input2Ref} placeholder="Project ID" onKeyDown={(e) => handleKeyDown(e, input3Ref)}
