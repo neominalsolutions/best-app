@@ -1,6 +1,6 @@
 import { Layout, Menu, theme } from 'antd';
 import React from 'react';
-import { Outlet } from 'react-router';
+import { Outlet, Link } from 'react-router';
 
 const { Header, Content, Footer } = Layout;
 
@@ -14,7 +14,7 @@ const headerStyle: React.CSSProperties = {
 	color: '#fff',
 	height: 64,
 	paddingInline: 48,
-    fontSize:36,
+	fontSize: 36,
 	lineHeight: '64px',
 	backgroundColor: '#4096ff',
 };
@@ -29,7 +29,10 @@ const MainLayout: React.FC = () => {
 			<Header style={headerStyle}>Best Header</Header>
 			<Header style={{ display: 'flex', alignItems: 'center' }}>
 				<div className="demo-logo" />
-				<div>Deneme</div>
+				<div style={{ marginRight: 16 }}>Deneme</div>
+				<Link to="/about" style={{ color: '#fff', marginRight: 16 }}>
+					About
+				</Link>
 				<Menu
 					theme="dark"
 					mode="horizontal"
