@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Avatar, Col, Dropdown, Layout, Row, Space, theme } from 'antd';
 import React from 'react';
-import { Link, Outlet } from 'react-router';
+import { Link, Outlet, useNavigate } from 'react-router';
 import { SessionContext } from '../../contexts/session.context';
 
 const { Header, Content, Footer } = Layout;
@@ -22,7 +22,8 @@ const MainLayout: React.FC = () => {
 	} = theme.useToken();
 
 	const sessionState = React.useContext(SessionContext);
-
+	const navigate = useNavigate(); // logout sonrası / anasayfaya yönlendirme için kullanıcaz
+	// Abdullah Bey bug yakaladı.
 	return (
 		<Layout>
 			<Header style={headerStyle}>
@@ -44,6 +45,7 @@ const MainLayout: React.FC = () => {
 									onClick: (info: any) => {
 										if (info.key === 'logout') {
 											sessionState.signOut();
+											navigate('/login'); // anasayfaya yönlendir
 										}
 									},
 								}}
@@ -73,11 +75,14 @@ const MainLayout: React.FC = () => {
 				</Row>
 			</Header>
 			<Header style={{ display: 'flex', alignItems: 'center' }}>
-				<div className="demo-logo" />
-				<div style={{ marginRight: 16 }}>Deneme</div>
 				<Link to="/about" style={{ color: '#fff', marginRight: 16 }}>
 					About
 				</Link>
+				{sessionState.session.isAuthenticated && (
+					<Link to="/projects" style={{ color: '#fff', marginRight: 16 }}>
+						Projects
+					</Link>
+				)}
 			</Header>
 			<Content style={{ padding: '0 48px' }}>
 				<div

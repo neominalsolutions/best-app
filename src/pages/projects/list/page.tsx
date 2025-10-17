@@ -1,7 +1,7 @@
-import React from 'react';
-import { Input, Table } from 'antd';
-import { Link } from 'react-router';
 import type { TableColumnsType, TableProps } from 'antd';
+import { Input, Table } from 'antd';
+import React from 'react';
+import { Link } from 'react-router';
 import { httpGet } from '../../../network/http.client';
 
 export interface DataType {
@@ -65,13 +65,16 @@ const columns: TableColumnsType<DataType> = [
 
 function ProjectListPage() {
 	const [data, setData] = React.useState<DataType[]>([]);
+	// bu hook arayüz ile ilgili geçiş işlemlerini yapar. tema değişikliği sonsrası yeni temanı pürürzsüz bir şekilde uygulanması için kullanılır.
+	// document objesi üzerinden başlık ve body stilini değiştirmek için kullanılır.
+	// useLayoutEffect senkron çalışır, useEffect asenkron çalışır.
+	// önce useLayoutEffect çalışır, sonra useEffect çalışır.
+	React.useLayoutEffect(() => {
+		document.title = 'Project List - Best App';
+		document.body.style.backgroundColor = '#f0f';
+	}, []); // son kullanıcının sayfayı görmemesi için kontrol yazdık.
 
 	React.useEffect(() => {
-		// fetch('https://localhost:7109/api/projects')
-		// 	.then((response) => response.json())
-		// 	.then((json) => setData(json))
-		// 	.catch((error) => console.error('Error fetching data:', error));
-
 		// manuel header'a token ekleme
 		httpGet('/projects', {
 			headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },

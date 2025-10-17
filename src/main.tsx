@@ -1,12 +1,13 @@
+import { Typography } from 'antd';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { SessionContextProvider } from './contexts/session.context';
 import MainLayout from './layouts/main/layout';
-import AboutPage from './pages/about/page';
 import LoginPage from './pages/login/login';
 import ProjectFormPage from './pages/projects/[id]/page';
 import ProjectListPage from './pages/projects/list/page';
+import AuthGuard from './guard/auth.guard';
 
 const router = createBrowserRouter([
 	{
@@ -15,15 +16,24 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true, // uygulama ilk açlıdığında home page olarak project list göster
-				Component: ProjectListPage,
+				// Authorize attribute benzer bir kontrol ekledik
+				element: (
+					<AuthGuard>
+						<ProjectListPage />
+					</AuthGuard>
+				),
 			},
 			{
 				path: '/projects',
-				Component: ProjectListPage,
+				element: (
+					<AuthGuard>
+						<ProjectListPage />
+					</AuthGuard>
+				),
 			},
 			{
 				path: '/about',
-				Component: AboutPage,
+				element: <Typography itemType="secondary">About Page</Typography>,
 			},
 			{
 				path: '/projects/:id', // projects/1
@@ -34,6 +44,14 @@ const router = createBrowserRouter([
 				Component: LoginPage,
 			},
 		],
+	},
+	{
+		path: '/403',
+		element: <Typography itemType="danger">403 - Access Denied</Typography>,
+	},
+	{
+		path: '*', // hiçbir path ile eşleşmezse 404 sayfasını göster
+		element: <Typography itemType="danger">404 - Sayfa Bulunamadı</Typography>,
 	},
 ]);
 

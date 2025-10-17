@@ -3,7 +3,7 @@
 // oturum yönetimi yapacağımız context dosyası
 
 import { jwtDecode } from 'jwt-decode';
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 
 export type SessionState = {
 	isAuthenticated: boolean;
@@ -47,9 +47,7 @@ export const SessionContextProvider: React.FC<
 	const [session, setSession] =
 		React.useState<SessionState>(defaultSessionState);
 
-	// Uygulama yüklendiğinde localStorage'dan token bilgisi kontrol edilir
-	// varsa oturum tekrar başlatılır.
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const token = localStorage.getItem('token');
 
 		console.log('Checking for existing token in localStorage:', token);
