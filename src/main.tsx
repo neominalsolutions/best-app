@@ -8,6 +8,7 @@ import LoginPage from './pages/login/login';
 import ProjectFormPage from './pages/projects/[id]/page';
 import ProjectListPage from './pages/projects/list/page';
 import AuthGuard from './guard/auth.guard';
+import RoleAdminGuard from './guard/role.admin.guard';
 
 const router = createBrowserRouter([
 	{
@@ -42,6 +43,14 @@ const router = createBrowserRouter([
 			{
 				path: '/login',
 				Component: LoginPage,
+			},
+			{
+				path: '/admin', // admin sayfası sadece admin role sahip kullanıcılar görebilecek
+				element: (
+					<RoleAdminGuard>
+						<Typography itemType="warning">Admin Page</Typography>
+					</RoleAdminGuard>
+				),
 			},
 		],
 	},

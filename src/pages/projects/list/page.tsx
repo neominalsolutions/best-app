@@ -71,7 +71,7 @@ function ProjectListPage() {
 	// önce useLayoutEffect çalışır, sonra useEffect çalışır.
 	React.useLayoutEffect(() => {
 		document.title = 'Project List - Best App';
-		document.body.style.backgroundColor = '#f0f';
+		// document.body.style.backgroundColor = '#f0f';
 	}, []); // son kullanıcının sayfayı görmemesi için kontrol yazdık.
 
 	React.useEffect(() => {

@@ -37,8 +37,8 @@ const MainLayout: React.FC = () => {
 								menu={{
 									items: [
 										{
-											key: 'profile',
-											label: <Link to="/profile">Profile</Link>,
+											key: 'admin',
+											label: <Link to="/admin">Admin</Link>,
 										},
 										{ key: 'logout', label: 'Logout' },
 									],
