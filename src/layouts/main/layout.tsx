@@ -1,6 +1,8 @@
-import { Col, Layout, Row, theme } from 'antd';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Avatar, Col, Dropdown, Layout, Row, Space, theme } from 'antd';
 import React from 'react';
 import { Link, Outlet } from 'react-router';
+import { SessionContext } from '../../contexts/session.context';
 
 const { Header, Content, Footer } = Layout;
 
@@ -19,6 +21,8 @@ const MainLayout: React.FC = () => {
 		token: { colorBgContainer, borderRadiusLG },
 	} = theme.useToken();
 
+	const sessionState = React.useContext(SessionContext);
+
 	return (
 		<Layout>
 			<Header style={headerStyle}>
@@ -26,11 +30,46 @@ const MainLayout: React.FC = () => {
 					<Col span={12} style={{ textAlign: 'left' }}>
 						Best App
 					</Col>
-					<Col span={12} style={{ textAlign: 'right' }}>
-						<Link to="/login" style={{ color: '#fff' }}>
-							Login
-						</Link>
-					</Col>
+					{sessionState.session.isAuthenticated && (
+						<Col span={12} style={{ textAlign: 'right' }}>
+							<Dropdown
+								menu={{
+									items: [
+										{
+											key: 'profile',
+											label: <Link to="/profile">Profile</Link>,
+										},
+										{ key: 'logout', label: 'Logout' },
+									],
+									onClick: (info: any) => {
+										if (info.key === 'logout') {
+											sessionState.signOut();
+										}
+									},
+								}}
+								trigger={['click']}
+							>
+								<a
+									onClick={(e) => e.preventDefault()}
+									style={{ color: '#fff' }}
+								>
+									<Space>
+										<Avatar style={{ backgroundColor: '#1677ff' }}>
+											{sessionState.session.userName?.charAt(0).toUpperCase()}
+										</Avatar>
+										<span>{sessionState.session.userName}</span>
+									</Space>
+								</a>
+							</Dropdown>
+						</Col>
+					)}
+					{!sessionState.session.isAuthenticated && (
+						<Col span={12} style={{ textAlign: 'right' }}>
+							<Link to="/login" style={{ color: '#fff' }}>
+								Login
+							</Link>
+						</Col>
+					)}
 				</Row>
 			</Header>
 			<Header style={{ display: 'flex', alignItems: 'center' }}>

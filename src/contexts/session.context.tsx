@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-refresh/only-export-components */
 // oturum yönetimi yapacağımız context dosyası
 
-import React from 'react';
+import { jwtDecode } from 'jwt-decode';
+import React, { useEffect } from 'react';
 
 export type SessionState = {
 	isAuthenticated: boolean;
@@ -45,14 +47,32 @@ export const SessionContextProvider: React.FC<
 	const [session, setSession] =
 		React.useState<SessionState>(defaultSessionState);
 
+	// Uygulama yüklendiğinde localStorage'dan token bilgisi kontrol edilir
+	// varsa oturum tekrar başlatılır.
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+
+		console.log('Checking for existing token in localStorage:', token);
+
+		if (token) {
+			const decodedToken = jwtDecode(token) as any;
+			setSession({
+				isAuthenticated: true,
+				userName: decodedToken.unique_name,
+				roles: decodedToken.role,
+			});
+		}
+	}, []);
+
 	const signIn = (userName: string, roles: string) => {
-        console.log("Signing in:", userName, roles);
+		console.log('Signing in:', userName, roles);
 		setSession({ isAuthenticated: true, userName, roles });
 	};
 
 	const signOut = () => {
-        console.log("Signing out");
+		console.log('Signing out');
 		setSession(defaultSessionState);
+		localStorage.removeItem('token');
 	};
 
 	return (

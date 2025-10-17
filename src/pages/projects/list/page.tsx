@@ -67,13 +67,15 @@ function ProjectListPage() {
 	const [data, setData] = React.useState<DataType[]>([]);
 
 	React.useEffect(() => {
-
 		// fetch('https://localhost:7109/api/projects')
 		// 	.then((response) => response.json())
 		// 	.then((json) => setData(json))
 		// 	.catch((error) => console.error('Error fetching data:', error));
 
-		httpGet('/projects')
+		// manuel header'a token ekleme
+		httpGet('/projects', {
+			headers: { Authorization: 'Bearer ' + localStorage.getItem('token') },
+		})
 			.then((data) => setData(data as DataType[]))
 			.catch((error) => console.error('Error fetching data:', error));
 	}, []);

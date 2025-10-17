@@ -14,11 +14,7 @@ const axiosClient = axios.create({
 
 // API GET
 export async function httpGet<T>(url: string, config?: any): Promise<T> {
-	const headers = {
-		'Custom-Header': 'CustomHeaderValue', // Örnek özel header
-	};
-
-	const response = await axiosClient.get<T>(url, { ...config, headers });
+	const response = await axiosClient.get<T>(url, config);
 	return response.data;
 }
 
@@ -40,6 +36,14 @@ export async function httpPost<T>(
 // Request Interceptor -> istek atılmadan önce çalışır
 axiosClient.interceptors.request.use(
 	(config) => {
+		// header üzerinden Authorization eklenmemiş ise o zaman her istek için bunu otomatik olarak ekle. her istekde bu kısım çalışacağından dolayı manuel ekleme yapmaya gerek kalmaz.
+		if (config.headers && !config.headers['Authorization']) {
+			const token = localStorage.getItem('token');
+			if (token) {
+				config.headers['Authorization'] = 'Bearer ' + token;
+			}
+		}
+
 		// İstekten önce yapılacak işlemler
 		console.log('Request sent at:', new Date().toISOString());
 		return config;
