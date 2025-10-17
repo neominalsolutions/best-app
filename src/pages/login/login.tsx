@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Form } from 'antd';
 import { httpPost } from '../../network/http.client';
 import { useNavigate } from 'react-router';
+import { jwtDecode } from 'jwt-decode';
+import { useContext } from 'react';
+import { SessionContext } from '../../contexts/session.context';
 
 interface LoginRequest {
 	username: string;
@@ -10,13 +14,27 @@ interface LoginRequest {
 function LoginPage() {
 	const [form] = Form.useForm();
 	const navigate = useNavigate(); // sayfa reload etmeden yöneldirme işlemi.
+	const sessionState = useContext(SessionContext);
 
 	const onFinish = (values: LoginRequest) => {
 		// api/auths/token -> token al
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 		httpPost('/auths/token', values).then((res: any) => {
 			// tokeni local storage kaydet
 			localStorage.setItem('token', res['accessToken']);
+
+			const decodedToken = jwtDecode(res['accessToken']) as any;
+			// jwt içindeki payload bilgilerini almak için jwt decode ettik.
+			console.log('Decoded token:', decodedToken);
+
+			// sessionState güncelledik.
+			sessionState.signIn(
+				decodedToken['unique_name'],
+				decodedToken['role'] 
+			);
+			// Kullanıcı bilgilerini state'e kaydet
+			// Burada kullanıcı bilgilerini bir state yönetimi çözümüne kaydedebilirsiniz
+			// Örneğin, Context API veya Redux kullanabilirsiniz
 
 			window.alert('Oturum açma başarılı!');
 

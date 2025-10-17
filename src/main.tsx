@@ -1,17 +1,14 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router';
+import { SessionContextProvider } from './contexts/session.context';
 import MainLayout from './layouts/main/layout';
-import {
-	createBrowserRouter,
-	createHashRouter,
-	RouterProvider,
-} from 'react-router';
-import ProjectListPage from './pages/projects/list/page';
-import ProjectFormPage from './pages/projects/[id]/page';
 import AboutPage from './pages/about/page';
 import LoginPage from './pages/login/login';
+import ProjectFormPage from './pages/projects/[id]/page';
+import ProjectListPage from './pages/projects/list/page';
 
-const routes = [
+const router = createBrowserRouter([
 	{
 		path: '',
 		Component: MainLayout,
@@ -38,18 +35,17 @@ const routes = [
 			},
 		],
 	},
-];
-
-// Electron prod (file://) için hash router kullan, web/dev için browser router
-const router =
-	window.location.protocol === 'file:'
-		? createHashRouter(routes)
-		: createBrowserRouter(routes);
+]);
 
 // RouterProvider uygulama genelindeki routeları yöneteten react router component
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<RouterProvider router={router} />
+		<SessionContextProvider>
+			<RouterProvider router={router} />
+		</SessionContextProvider>
 	</StrictMode>
 );
+
+// Tüm route sayalarından session bilgilerine erişmek için Context Provider ile sarmalladık
+// 2. adım context yazıldıktan sonra provider ile sarmallama işlemi yapılır

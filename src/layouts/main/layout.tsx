@@ -1,13 +1,8 @@
-import { Layout, Menu, theme, Row, Col } from 'antd';
+import { Col, Layout, Row, theme } from 'antd';
 import React from 'react';
-import { Outlet, Link } from 'react-router';
+import { Link, Outlet } from 'react-router';
 
 const { Header, Content, Footer } = Layout;
-
-const items = Array.from({ length: 15 }).map((_, index) => ({
-	key: index + 1,
-	label: `nav ${index + 1}`,
-}));
 
 const headerStyle: React.CSSProperties = {
 	textAlign: 'center',
@@ -44,13 +39,6 @@ const MainLayout: React.FC = () => {
 				<Link to="/about" style={{ color: '#fff', marginRight: 16 }}>
 					About
 				</Link>
-				<Menu
-					theme="dark"
-					mode="horizontal"
-					defaultSelectedKeys={['2']}
-					items={items}
-					style={{ flex: 1, minWidth: 0 }}
-				/>
 			</Header>
 			<Content style={{ padding: '0 48px' }}>
 				<div
